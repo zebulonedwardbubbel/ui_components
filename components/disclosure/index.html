@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="../../styles.css">
+    <style>
+    /* Enforcing the button to only show when it has a valid aria-expanded attribute */
+    .link-button {
+      display: none;
+    /* The rest of the button CSS */
+    }
+
+    .link-button[aria-expanded] {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Enforcing the panel to only conceal content when the sibling button has a valid aria-expanded attribute */
+    [aria-expanded] + .panel {
+      --panel-max-height: 500px;
+
+      transition: all 500ms cubic-bezier(0.33, 1, 0.68, 1); /* easeOutCubic */
+      position: relative;
+      overflow-y: auto;
+      overflow-x: hidden;
+      max-height: 0;
+      visibility: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .link-button svg {
+      transition: all 250ms ease-in-out;
+    }
+
+    [aria-expanded="true"] svg {
+      transform: rotate(-180deg);
+    }
+
+    [aria-expanded] + .panel .panel__inner {
+      transition: all 500ms ease;
+      transition-delay: 50ms;
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+
+    [aria-expanded='true'] + .panel {
+      max-height: var(--panel-max-height);
+      visibility: visible;
+    }
+
+    [aria-expanded='true'] + .panel .panel__inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="c-container">
+            <h1>header</h1>
+        </div>
+    </header>
+    <main>
+        <div class="c-container">
+            <h2>Progressive disclosure component</h2>
+            <p><a href="https://piccalil.li/tutorial/a-progressive-disclosure-component/"></a></p>
+            <div class="c-disclosure">
+                <button class="[ link-button ] [ js-trigger ]" type="button" hidden>
+                  Disclosure #1
+                  <svg viewBox="0 0 512 512" aria-hidden="true" fill="currentColor" width="1em" height="1em">
+                    <path d="M60 99.333l196 196 196-196 60 60-256 256-256-256z"></path>
+                  </svg>
+                </button>
+                <div class="[ panel ] [ js-panel ]">
+                  <article class="[ panel__inner ] [ js-panel__inner ]">
+                    <p>
+                      Lorem ipsum dolor sit amet, appareat pertinax et ius, ne pro nibh consulatu consetetur, nulla virtute definitiones nec in. Ad consul feugait eligendi mea, mutat tamquam ei mei. No hinc graecis phaedrum pro, cu erat ipsum sed, ut novum dissentiunt
+                      ullamcorper pro. <a href="#">Dicat aliquid dissentias</a> in per, meis alterum quaestio mei eu, vero praesent ex eam. Ei nam homero noluisse dissentiunt, ut vim quot putent. Vis elitr accusam accommodare id, cu usu quaestio conceptam, habeo tibique placerat eos
+                      cu. An nullam corpora consulatu qui, graeci euripidis est et.
+                    </p>
+                    <p>
+                      In tantas scripta nominati quo, ne essent maluisset voluptaria nam. Dicat putent feugiat ei sed, te vis delicata gubergren honestatis, ius liber blandit delicata ut. Vix et dictas detracto voluptua, vis an inani dicunt. Qui inciderint intellegebat ea,
+                      cetero verear cu duo.
+                    </p>
+                    <p>
+                      Vix id etiam sapientem. Vix case velit feugait eu. Id diceret delenit perpetua vis, has sale utamur aeterno te. Cum et consetetur mediocritatem.
+                    </p>
+                  </article>
+                </div>
+            </div>
+            <div class="c-disclosure">
+                <button class="[ link-button ] [ js-trigger ]" type="button" hidden>
+                  Disclosure #2
+                  <svg viewBox="0 0 512 512" aria-hidden="true" fill="currentColor" width="1em" height="1em">
+                    <path d="M60 99.333l196 196 196-196 60 60-256 256-256-256z"></path>
+                  </svg>
+                </button>
+                <div class="[ panel ] [ js-panel ]">
+                  <article class="[ panel__inner ] [ js-panel__inner ]">
+                    <p>
+                      Lorem ipsum dolor sit amet, appareat pertinax et ius, ne pro nibh consulatu consetetur, nulla virtute definitiones nec in. Ad consul feugait eligendi mea, mutat tamquam ei mei. No hinc graecis phaedrum pro, cu erat ipsum sed, ut novum dissentiunt
+                      ullamcorper pro. <a href="#">Dicat aliquid dissentias</a> in per, meis alterum quaestio mei eu, vero praesent ex eam. Ei nam homero noluisse dissentiunt, ut vim quot putent. Vis elitr accusam accommodare id, cu usu quaestio conceptam, habeo tibique placerat eos
+                      cu. An nullam corpora consulatu qui, graeci euripidis est et.
+                    </p>
+                    <p>
+                      In tantas scripta nominati quo, ne essent maluisset voluptaria nam. Dicat putent feugiat ei sed, te vis delicata gubergren honestatis, ius liber blandit delicata ut. Vix et dictas detracto voluptua, vis an inani dicunt. Qui inciderint intellegebat ea,
+                      cetero verear cu duo.
+                    </p>
+                    <p>
+                      Vix id etiam sapientem. Vix case velit feugait eu. Id diceret delenit perpetua vis, has sale utamur aeterno te. Cum et consetetur mediocritatem.
+                    </p>
+                  </article>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="c-container">
+            <h2>footer</h2>
+        </div>
+    </footer>
+    <script>
+    const disclosures = Array.prototype.slice.call(document.querySelectorAll('.c-disclosure'));
+    disclosures.forEach(disclosure => {
+
+      const trigger = disclosure.querySelector('.js-trigger');
+      const panel = disclosure.querySelector('.js-panel');
+      const panelInner = disclosure.querySelector('.js-panel__inner');
+
+      // This is the CSS Custom Property that is updated with the panel's content's height
+      const maxHeightKey = '--panel-max-height';
+
+      let state = {
+        triggerExpanded: 'collapsed'
+      }
+
+
+      // Sets the relevant aria role based on its current value. Sets it to false by default
+      // if no value is set
+      const setTriggerState = () => {
+        let currentExpandedState = trigger.getAttribute('aria-expanded');
+
+        // If it's not set yet, set it to true so it is reversed below
+        if(currentExpandedState === null) {
+          currentExpandedState = 'true';
+        }
+
+        // Update our global state so other functions know what's up
+        state.triggerExpanded = currentExpandedState === 'true' ? 'false' : 'true'
+
+        trigger.setAttribute('aria-expanded', state.triggerExpanded);
+        trigger.removeAttribute('hidden');
+      };
+
+      // Looks for content within the panel and calculates its height. This makes the transition smoother.
+      // Returns a promise so it can do its job before the toggle starts
+      const setMaxHeight = () => {
+        return new Promise((resolve, reject) => {
+          if(!panel || !panelInner) {
+            reject();
+          }
+
+          panel.style.overflowY = 'hidden';
+          panel.style.setProperty(maxHeightKey, `${panelInner.getBoundingClientRect().height}px`);
+          resolve();
+        });
+      };
+
+      const run = () => {
+        setMaxHeight()
+        .then(() => setTriggerState());
+      };
+
+      trigger.addEventListener('click', run);
+      run();
+    });
+      </script>
+</body>
+</html>

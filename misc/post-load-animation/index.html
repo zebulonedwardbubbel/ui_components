@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post load animation</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .is-hidden {
+            opacity: 0;
+        }
+
+        .is-visible {
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        document.body.classList.add('is-hidden');
+    </script>
+    <header>
+        <div class="l-container">
+            <h1>Post load animation</h1>
+        </div>
+    </header>
+    <main>
+        <div class="l-container">
+            <h2>Trigger animation on page load</h2>
+        </div>
+    </main>
+    <footer>
+        <div class="l-container">
+            <h2>footer</h2>
+        </div>
+    </footer>
+    <script>
+        window.addEventListener('load', () => {
+            document.body.classList.remove('is-hidden');
+            document.body.classList.add('is-visible');
+        })
+    </script>
+</body>
+</html>
